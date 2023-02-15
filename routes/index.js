@@ -72,41 +72,71 @@ var userRepos = {
   , jane: [repos[2]]
 };
 
+// let tutorials = new Map();
+// tutorials.set(1, {
+//   title: 'Lorem ipsum',
+//   body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus mollis nulla et urna euismod, sit amet congue diam cursus. Cras aliquam metus quam, nec sagittis est condimentum id. ',
+// });
+// tutorials.set(2, {
+//   title: 'Lorem second',
+//   body: 'Morbi justo mauris, interdum in consequat sit amet, scelerisque at augue.'
+// });
+// tutorials.set(3, {
+//   title: 'Lorem third',
+//   body: 'Sed finibus imperdiet metus sed eleifend. Integer et ultricies est. Aenean at varius leo.'
+// });
+
+let tutorials = {
+  1: {
+    title: 'Lorem ipsum',
+    body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus mollis nulla et urna euismod, sit amet congue diam cursus. Cras aliquam metus quam, nec sagittis est condimentum id. ', 
+  },
+  2: {
+    title: 'Lorem second',
+    body: 'Morbi justo mauris, interdum in consequat sit amet, scelerisque at augue.'  
+  },
+  3: {
+    title: 'Lorem third',
+    body: 'Sed finibus imperdiet metus sed eleifend. Integer et ultricies est. Aenean at varius leo.'  
+  },
+};
+
+
 // we now can assume the api key is valid,
 // and simply expose the data
 
 // example: http://localhost:3000/tutorials?api-key=foo
+// example: http://localhost:3000/tutorials?title=1&api-key=foo
 app.get('/tutorials', (req, res, next) => {
-  return res.send(users);
+  let title = req.query['title'];
+  let tutorial = tutorials[title];
+  
+  if (title && tutorial) {
+    return res.send(tutorial);
+  }
+
+  return res.send(tutorials);
 });
 
 // example: POST http://localhost:3000/tutorials?api-key=foo
+  console.log('post /tutorials');
 app.post('/tutorials', () => console.log('post tutorials'));
 
 
 // example: http://localhost:3000/tutorials/1/?api-key=foo
 app.get('/tutorials/:id', (req, res, next) => {
+  console.log(`get('/tutorials/:id, id:${id}`)
   return res.send(repos);
 });
 
 app.put('/tutorials/:id', (req, res, next) => {
+  console.log(`put('/tutorials/:id, id:${id}`)
   return res.send(repos);
 });
 
 // Deletes all tutorials
 app.delete('/tutorials/:id', (req, res, next) => {
+  console.log(`delete('/tutorials/:id, id:${id}`)
   return res.send(repos);
 });
 
-app.get('/tutorial?title', () => console.log('title: ', title));
-
-
-
-// example: http://localhost:3000/tutorials/user/tobi/repos/?api-key=foo
-app.get('/tutorials/user/:name/repos', function(req, res, next){
-  var name = req.params.name;
-  var user = userRepos[name];
-
-  if (user) res.send(user);
-  else next();
-});
